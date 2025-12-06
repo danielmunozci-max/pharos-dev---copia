@@ -1,16 +1,12 @@
-FROM php:8.2-apache
+FROM php:8.2-cli
 
-# Instalar extensiones necesarias para MySQL/MariaDB
-RUN docker-php-ext-install pdo pdo_mysql
-
-# Habilitar mod_rewrite (IMPORTANTE para Laravel)
-RUN a2enmod rewrite
-
-# Copiar todo tu proyecto al contenedor
 WORKDIR /var/www/html
+
+# Copiar todos tus archivos
 COPY . .
 
-# Dar permisos a Apache
-RUN chown -R www-data:www-data /var/www/html
+# Render te da un PORT (ej: 10000)
+ENV PORT=10000
 
-EXPOSE 80
+# Iniciar solo un servidor web básico que muestra tu index.html
+CMD php -S 0.0.0.0:${PORT} -t /var/www/html
